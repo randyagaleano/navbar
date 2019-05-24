@@ -24,5 +24,16 @@ nav {
     display: flex;
     justify-content: space-around;
     width: 30%;
-    background-color: red;
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    letter-spacing: 2.5px;
+    font-weight: bold;
+    font-size: 14px;
 }
