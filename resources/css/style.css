@@ -1,103 +1,145 @@
-* {
+/*Alphabetizing CSS properties help you quickly find if you've applied a property*/
+
+/*Target pseudo element too*/
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
     margin: 0px;
     padding: 0px;
-    box-sizing: border-box;
-    font-family: Montserrat, Arial, Helvetica, sans-serif;
 }
 
-nav {
+/*We don't need to apply a font to everything, just set on the body and inheritance will take care of it*/
+body {
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    overflow-x: hidden; /*Might as well always have this on*/
+}
+
+/*I know this is just a simple example but in a larger project elements like this should always be targeted by a class*/
+.global-navigation {
+    align-items: center;
+    background-color: lightseagreen;
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    min-height: 9vh;
-    background-color: lightseagreen;
+    height: 50px;/* Kind of weird to have the height of your nav bar be dependant on viewport size, looked bad on mobile landscape*/
 }
 
-.logo {
+.global-navigation__logo {
     color: white;
-    text-transform: uppercase;
-    letter-spacing: 5px;
     font-size: 18px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
 }
 
-.nav-links {
+.global-navigation__menu {
     display: flex;
     justify-content: space-around;
     width: 40%;
 }
 
-.nav-links li {
+.global-navigation__menu li {
     list-style: none;
 }
 
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    letter-spacing: 2.5px;
-    font-weight: bold;
-    font-size: 14px;
+.global-navigation__menu--active li {
+    animation: navFade 0.15s ease forwards;
 }
 
-.hamburger-icon {
+.global-navigation__menu a {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2.5px;
+    text-decoration: none;
+}
+
+/*
+  Name it what it actually is. One day you may change it to not be a hamburger,
+  then you'd have to not only update the css, but the HTML and JS too.
+*/
+.global-navigation__menu-trigger {
     display: none;
 }
 
-.hamburger-icon div {
-    transition: all 0.5s ease;
-    width: 25px;
-    height: 2.5px;
+/* I'd use a span just because divs are more used for "larger" things */
+.global-navigation__menu-trigger span {
     background-color: white;
+    display: block;
     margin: 5px;
+    height: 2.5px;
+    transition: all 0.15s ease;
+    width: 25px;
 }
 
-.toggle .line2 {
+/* I'm usually in favor of putting class names on stuff but I think it's unnecessary here */
+.global-navigation__menu-trigger--active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.global-navigation__menu-trigger--active span:nth-child(2) {
     opacity: 0;
 }
 
-.toggle .line1 {
-    transform: rotate(-45deg) translate(-5px, 6px);  
+.global-navigation__menu-trigger--active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
 }
 
-.toggle .line3 {
-    transform: rotate(45deg) translate(-5px, -6px);  
-}
 
+/*
+ * I'd recommend developing "mobile-first"
+ * So using 'min-width' instead of 'max-width.
+ * It's lighter on a phone's CPU because it doesn't do
+ * anything with media queries it doesn't match. So
+ * using min-width, there is code a phone's CPU won't
+ * even look at. But a phone will process code in a
+ * max-width media query.
+
+ * For instance, a phone will process ALL the code in
+ * this stylesheet. Whereas a desktop will only process
+ * the code out side the max-width media queries below
+ * So you're making the phone do more work than the desktop
+ * which isn't ideal
+ */
 @media screen and (max-width: 1024px) {
-    .nav-links {
+    .global-navigation__menu {
         width: 50%;
     }
 }
 
 @media screen and (max-width: 768px) {
-    /*.nav-links a {
+    /*.global-navigation__menu a {
         color: black;
     }*/
-    .hamburger-icon {
+    .global-navigation__menu-trigger {
         display: block;
         cursor: pointer;
     }
-    body {
-        overflow-x: hidden;
-    }
-    .nav-links {
-        position: absolute;
-        width: 50%;
-        display: flex;
-        flex-direction: column;
+    .global-navigation__menu {
         align-items: center;
         background-color: lightseagreen;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 50px);
+        position: absolute;
         right: 0px;
-        height: 91vh;
-        top: 9vh;
+        top: 50px;
         transform: translateX(100%);
-        transition: transform 0.5s ease-in;
+        transition: transform 0.15s ease-in;
+        width: 50%;
+        will-change: transform; /*preps the browser for what's going to change, makes animations smoother*/
     }
-    .nav-links li {
+    .global-navigation__menu li {
         opacity: 0;
     }
 }
 
-.nav-active {
+/*Mobile first would avoid you needing to put this class after the media queries*/
+.global-navigation__menu--active {
+    /*
+     * Good usage of `transform` instead of using the position properties like `left`.
+     * Transform is better for performance. See this SO answer for why:
+     * https://stackoverflow.com/a/53892597
+     */
     transform: translateX(0%);
 }
 
@@ -110,4 +152,16 @@ nav {
         opacity: 1;
         transform: translateX(0px);
     }
+}
+
+/*
+ * Utilities
+ */
+/*A class I use to strip button styles off of buttons*/
+.de-button {
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
 }
